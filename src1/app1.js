@@ -139,6 +139,11 @@ app.post('/reset-password', (req, res) => {
 
 // ---------------- Server ---------------- //
 const PORT = process.env.PORT || 3000;
+// ROOT route
+app.get('/', (req, res) => {
+  res.redirect('/signup'); // 👈 redirect root to signup page
+});
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
   open(`http://localhost:${PORT}/signup`);
