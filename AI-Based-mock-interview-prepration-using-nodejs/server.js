@@ -2,6 +2,12 @@
 const connectDB = require('./src/config/dbConfig');
 const app = require('./src/app');
 require('dotenv').config();
+const express = require('express');
+const app = express();
+
+// ✅ Add this line for Render / proxies
+app.set('trust proxy', 1);
+
 
 const cors = require('cors');
 
