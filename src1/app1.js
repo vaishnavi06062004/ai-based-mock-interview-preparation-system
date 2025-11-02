@@ -6,7 +6,7 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-
+app.set('trust proxy', 1);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
