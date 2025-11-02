@@ -5,7 +5,8 @@
   "main": "app1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app1.js"
+    "start":  "node src/app.js"
+
   },
   "keywords": [],
   "author": "",
