@@ -145,6 +145,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  open(`http://localhost:${PORT}/signup`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
