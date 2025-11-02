@@ -1,43 +1,43 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
-const open = require('open').default;
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.set('trust proxy', 1);
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
 
-// Set multiple views folders
+// ✅ Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public'))); // serve CSS, JS, images
+
+// ✅ Set multiple views folders
 app.set('views', [
   path.join(__dirname, 'views1'),       // src1/views1 -> auth pages
   path.join(__dirname, '../src/views')  // src/views -> home.ejs and others
 ]);
-
 app.set('view engine', 'ejs');
 
-// Nodemailer transporter
+// ✅ Nodemailer transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS // Gmail App Password
+    pass: process.env.GMAIL_PASS
   }
 });
 
-// Test transporter
+// ✅ Verify transporter
 transporter.verify(function(error, success) {
-  if (error) console.log('Nodemailer Error:', error);
-  else console.log('Nodemailer Ready to Send Emails');
+  if (error) console.log('❌ Nodemailer Error:', error);
+  else console.log('📧 Nodemailer Ready to Send Emails');
 });
 
-// Simulated databases
+// ✅ Simulated databases
 const users = {};       // { email: { name, password, verified, token } }
 const resetTokens = {}; // { email: resetCode }
 
-// ---------------- Routes ---------------- //
+// ---------------- ROUTES ---------------- //
 
 // SIGNUP
 app.get('/signup', (req, res) => res.render('signup'));
@@ -89,8 +89,9 @@ app.post('/login', (req, res) => {
   if (!users[email]) return res.send('Email not registered');
   if (!users[email].verified) return res.send('Email not verified');
   if (users[email].password !== password) return res.send('Incorrect password');
-  // Successful login → render home.ejs
-  res.redirect('http://localhost:8080');
+
+  // ✅ Successful login → redirect to home page
+  res.redirect('/home');
 });
 
 // FORGOT PASSWORD
@@ -137,13 +138,18 @@ app.post('/reset-password', (req, res) => {
   }
 });
 
-// ---------------- Server ---------------- //
-const PORT = process.env.PORT || 3000;
-// ROOT route
-app.get('/', (req, res) => {
-  res.redirect('/signup'); // 👈 redirect root to signup page
+// ✅ HOME route
+app.get('/home', (req, res) => {
+  res.render('home');
 });
 
+// ✅ ROOT route
+app.get('/', (req, res) => {
+  res.redirect('/signup');
+});
+
+// ✅ Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
